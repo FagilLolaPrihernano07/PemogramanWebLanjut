@@ -3,76 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\IncomingLetter;
 
 class SuratMasukController extends Controller
 {
 
     public function index() {
+        $suratMasuk=incomingletter::all();
 
-            $suratmasuk = [
-                [
-                    'id' => 1 ,
-                    'nomor surat' =>'002/ft/c/2022',
-                    'tanggal' => '05-05-2005',
-                    'pengirim'=> 'Fakultas',
-                    'perihal'=> 'undangan rapat'
-                ],
-                
-                [
-                    'id' => 2 ,
-                    'nomor surat' =>'001/ft/c/2029',
-                    'tanggal' => '05-05-2007',
-                    'pengirim'=> 'BBB',
-                    'perihal'=> 'undangan akademik'
-
-                ],
-               
-                [
-                    'id' => 3 ,
-                    'nomor surat' =>'003/ft/c/2008',
-                    'tanggal' => '05-09-2009',
-                    'pengirim'=> 'FKIP',
-                    'perihal'=> 'undangan sosialisasi'
-
-                ]
-
-
-            ]  ;  
-
-            return view ('surat-masuk.index', compact('suratmasuk')) ;
+        return view('surat-masuk.index', compact('suratMasuk'));
     }
+    public function show($id)
+    {
+        $surat=incomingletter::FindOrFail($id);
 
-     public function show($id) {
-           // return 'detail surat masuk dengan id'. $id ;
-           $suratMasukDetail =[
-
-           1=>[
-            'id' => 1 ,
-                    'nomor surat' =>'002/ft/c/2022',
-                    'tanggal' => '05-05-2005',
-                    'pengirim'=> 'Fakultas',
-                    'perihal'=> 'undangan rapat'
-           ],
-           2=>[
-         'id' => 2 ,
-                    'nomor surat' =>'001/ft/c/2029',
-                    'tanggal' => '05-05-2007',
-                    'pengirim'=> 'BBB',
-                    'perihal'=> 'undangan akademik'
-
-        ],
-        3=>[
-            'id' => 3 ,
-                    'nomor surat' =>'003/ft/c/2008',
-                    'tanggal' => '05-09-2009',
-                    'pengirim'=> 'FKIP',
-                    'perihal'=> 'undangan sosialisasi'
-
-        ]
-
-
-        ];
-        $surat = $suratMasukDetail[$id] ?? null ;
+        // Kirim data ke view show.blade.php
         return view('surat-masuk.show', compact('surat'));
     }
 

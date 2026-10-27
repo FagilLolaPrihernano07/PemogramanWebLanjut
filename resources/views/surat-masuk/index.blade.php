@@ -3,9 +3,10 @@
 @section('title', 'Halaman Surat Masuk')
 
 @section('content')
+
     <h1>Halaman Surat Masuk</h1>
 
-    <table border='1' cellpadding='10'>
+    <table border="1" cellpadding="10">
         <thead>
             <tr>
                 <th>No</th>
@@ -16,19 +17,23 @@
                 <th>Aksi</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach ($suratmasuk as $surat)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $surat['nomor surat'] }}</td>
-                <td>{{ $surat['tanggal'] }}</td>
-                <td>{{ $surat['pengirim'] }}</td>
-                <td>{{ $surat['perihal'] }}</td>
-                <td>
-                    <a href="{{ route('surat-masuk.show', $surat['id']) }}">Detail</a>
-                </td>
-            </tr>
+            @foreach ($suratMasuk as $surat)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $surat->nomor_surat }}</td>
+                    <td>{{ $surat->tanggal }}</td>
+                    <td>{{ $surat->pengirim }}</td>
+                    <td>{{ $surat->perihal }}</td>
+                    <td>
+                        <a href="{{ route('surat-masuk.show', $surat->id) }}">
+                            Detail
+                        </a>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
+
 @endsection
