@@ -3,8 +3,13 @@
 @section('title', 'Halaman Surat Keluar')
 
 @section('content')
-
     <h1>Halaman Surat Keluar</h1>
+
+    <a href="{{ route('surat-keluar.create') }}">+ Tambah Surat</a>
+
+    @if (session('success'))
+        <p style="color:green">{{ session('success') }}</p>
+    @endif
 
     <table border="1" cellpadding="10">
         <thead>
@@ -12,34 +17,34 @@
                 <th>No</th>
                 <th>Nomor Surat</th>
                 <th>Tanggal Surat</th>
+                <th>Tujuan</th>
                 <th>Perihal</th>
                 <th>Aksi</th>
             </tr>
         </thead>
-
         <tbody>
-            @forelse ($suratkeluar as $surat)
+            @forelse ($suratKeluar as $surat)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    {{-- Ubah dari {'nomor surat'} menjadi nomor_surat --}}
-                    <td>{{ $surat->nomor_surat }}</td> 
+                    <td>{{ $surat->nomor_surat }}</td>
                     <td>{{ $surat->tanggal }}</td>
+                    <td>{{ $surat->tujuan ?? '-' }}</td>
                     <td>{{ $surat->perihal }}</td>
                     <td>
-                        <a href="{{ route('surat-keluar.show', $surat->id) }}">
-                            Detail
-                        </a>
+                        <a href="{{ route('surat-keluar.show', $surat->id) }}">Detail</a>
+                        <a href="{{ route('surat-keluar.edit', $surat->id) }}">Edit</a>
+                        <form action="{{ route('surat-keluar.destroy', $surat->id) }}"
+                              method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                onclick="return confirm('Hapus surat ini?')">Hapus</button>
+                        </form>
                     </td>
                 </tr>
             @empty
-                <tr>
-                    {{-- Sesuaikan colspan dengan jumlah kolom th (ada 5 kolom) --}}
-                    <td colspan="5">
-                        Belum ada data surat keluar.
-                    </td>
-                </tr>
+                <tr><td colspan="6">Belum ada data surat keluar.</td></tr>
             @endforelse
         </tbody>
     </table>
-
 @endsection
