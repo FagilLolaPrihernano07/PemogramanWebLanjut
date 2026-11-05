@@ -1,43 +1,36 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
 
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+});
 
-//ROute Sederhana 
+Route::middleware('auth')->group(function () {
+    Route::get('/', fn () => view('dashboard'))->name('dashboard');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route::get('/surat-masuk', function () {
-//     return 'Halaman surat masuk';
-// });
+    // Surat Masuk: create/store/edit/update/destroy hanya untuk petugas
+    Route::resource('surat-masuk', SuratMasukController::class)
+        ->except(['index', 'show'])
+        ->parameters(['surat-masuk' => 'id'])
+        ->middleware('can:manage-letters');
 
+    Route::resource('surat-masuk', SuratMasukController::class)
+        ->only(['index', 'show'])
+        ->parameters(['surat-masuk' => 'id']);
 
-// //Route dengan parameter
+    // Surat Keluar: pola yang sama
+    Route::resource('surat-keluar', SuratKeluarController::class)
+        ->except(['index', 'show'])
+        ->parameters(['surat-keluar' => 'id'])
+        ->middleware('can:manage-letters');
 
-// Route::get('/surat-masuk/{id}', function ($id) {
-//     return 'Detail surat masuk dengan id:' .$id;
-// });
-
-// //Named route
-
-// Route::get('/surat-masuk', function () {
-//     return 'Halaman surat masuk';
-// })-> name('surat-masuk.index');
-
-// Route::get('/surat-masuk/{id}', function ($id) {
-//     return 'Detail surat masuk dengan id:' .$id;
-// })-> name('surat-,asuk.show');
-
-
-
-Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-// Tambahkan route dashboard ini;
-
-Route::resource('surat-masuk', SuratMasukController::class)
-    ->parameters(['surat-masuk' => 'id']);
-
-Route::resource('surat-keluar', SuratKeluarController::class)
-    ->parameters(['surat-keluar' => 'id']);
+    Route::resource('surat-keluar', SuratKeluarController::class)
+        ->only(['index', 'show'])
+        ->parameters(['surat-keluar' => 'id']);
+});
