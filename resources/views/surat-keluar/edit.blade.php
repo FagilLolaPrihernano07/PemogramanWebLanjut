@@ -3,38 +3,52 @@
 @section('title', 'Edit Surat Keluar')
 
 @section('content')
-    <h1>Edit Surat Keluar</h1>
+    <h1 class="mb-6 text-2xl font-bold">Edit Surat Keluar</h1>
 
-    <form action="{{ route('surat-keluar.update', $surat->id) }}" method="POST">
+    <form action="{{ route('surat-keluar.update', $surat->id) }}" method="POST"
+          class="max-w-xl space-y-4 rounded-lg bg-white p-6 shadow">
         @csrf
         @method('PUT')
 
-        <p>Nomor Surat:<br>
-            <input name="nomor_surat" value="{{ old('nomor_surat', $surat->nomor_surat) }}">
-            @error('nomor_surat') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <div>
+            <label class="mb-1 block text-sm font-medium">Nomor Surat</label>
+            <input name="nomor_surat" value="{{ old('nomor_surat', $surat->nomor_surat) }}"
+                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            @error('nomor_surat') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
 
-        <p>Tanggal:<br>
-            <input type="date" name="tanggal" value="{{ old('tanggal', $surat->tanggal) }}">
-            @error('tanggal') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <div>
+            <label class="mb-1 block text-sm font-medium">Tanggal</label>
+            <input type="date" name="tanggal" value="{{ old('tanggal', $surat->tanggal) }}"
+                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            @error('tanggal') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
 
-        <p>Tujuan:<br>
-            <input name="tujuan" value="{{ old('tujuan', $surat->tujuan) }}">
-            @error('tujuan') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <div>
+            <label class="mb-1 block text-sm font-medium">Tujuan</label>
+            <input name="tujuan" value="{{ old('tujuan', $surat->tujuan) }}"
+                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            @error('tujuan') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
 
-        <p>Perihal:<br>
-            <input name="perihal" value="{{ old('perihal', $surat->perihal) }}">
-            @error('perihal') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <div>
+            <label class="mb-1 block text-sm font-medium">Perihal</label>
+            <input name="perihal" value="{{ old('perihal', $surat->perihal) }}"
+                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            @error('perihal') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
 
-        <p>Keterangan:<br>
-            <textarea name="keterangan">{{ old('keterangan', $surat->keterangan) }}</textarea>
-            @error('keterangan') <span style="color:red">{{ $message }}</span> @enderror
-        </p>
+        <div>
+            <label class="mb-1 block text-sm font-medium">Keterangan</label>
+            <textarea name="keterangan" rows="3"
+                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">{{ old('keterangan', $surat->keterangan) }}</textarea>
+            @error('keterangan') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
 
-        <button type="submit">Simpan Perubahan</button>
-        <a href="{{ route('surat-keluar.index') }}">Batal</a>
+        <div class="flex items-center gap-4">
+            <button type="submit"
+                class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">Simpan Perubahan</button>
+            <a href="{{ route('surat-keluar.index') }}" class="text-sm text-slate-600 hover:underline">Batal</a>
+        </div>
     </form>
 @endsection
