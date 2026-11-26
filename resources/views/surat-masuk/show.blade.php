@@ -3,22 +3,62 @@
 @section('title', 'Detail Surat Masuk')
 
 @section('content')
-    <h1 class="mb-6 text-2xl font-bold">Detail Surat Masuk</h1>
+    <div class="mb-6">
+        <p class="text-sm text-slate-500">
+            <a href="{{ route('dashboard') }}" class="hover:text-indigo-600">Dashboard</a> /
+            <a href="{{ route('surat-masuk.index') }}" class="hover:text-indigo-600">Surat Masuk</a> / Detail
+        </p>
+        <h1 class="mt-1 text-2xl font-bold text-slate-900">Detail Surat Masuk</h1>
+    </div>
 
-    @if ($surat)
-        <dl class="max-w-xl space-y-3 rounded-lg bg-white p-6 shadow">
-            <div><dt class="text-sm font-semibold text-slate-500">Nomor Surat</dt><dd>{{ $surat->nomor_surat }}</dd></div>
-            <div><dt class="text-sm font-semibold text-slate-500">Tanggal</dt><dd>{{ $surat->tanggal }}</dd></div>
-            <div><dt class="text-sm font-semibold text-slate-500">Pengirim</dt><dd>{{ $surat->pengirim }}</dd></div>
-            <div><dt class="text-sm font-semibold text-slate-500">Perihal</dt><dd>{{ $surat->perihal }}</dd></div>
-            <div><dt class="text-sm font-semibold text-slate-500">Keterangan</dt><dd>{{ $surat->keterangan ?? '-' }}</dd></div>
+    <div class="max-w-2xl rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
+        <dl class="divide-y divide-slate-100">
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Nomor Surat</dt>
+                <dd class="text-sm font-semibold text-slate-900 sm:col-span-2">{{ $surat->nomor_surat }}</dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Tanggal</dt>
+                <dd class="text-sm text-slate-900 sm:col-span-2">{{ \Carbon\Carbon::parse($surat->tanggal)->format('d/m/Y') }}</dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Pengirim</dt>
+                <dd class="text-sm text-slate-900 sm:col-span-2">{{ $surat->pengirim }}</dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Kategori</dt>
+                <dd class="text-sm sm:col-span-2">
+                    @if ($surat->category)
+                        <span class="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700">{{ $surat->category->nama }}</span>
+                    @else
+                        <span class="text-slate-400">Tanpa kategori</span>
+                    @endif
+                </dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Perihal</dt>
+                <dd class="text-sm text-slate-900 sm:col-span-2">{{ $surat->perihal }}</dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Keterangan</dt>
+                <dd class="text-sm text-slate-900 sm:col-span-2">{{ $surat->keterangan ?? '-' }}</dd>
+            </div>
+            <div class="grid gap-1 py-3 sm:grid-cols-3">
+                <dt class="text-sm font-medium text-slate-500">Lampiran</dt>
+                <dd class="text-sm sm:col-span-2">
+                    @if ($surat->lampiran)
+                        <a href="{{ asset('storage/' . $surat->lampiran) }}" target="_blank" rel="noopener"
+                           class="font-medium text-indigo-600 hover:underline">Lihat lampiran</a>
+                    @else
+                        <span class="text-slate-400">Tidak ada lampiran</span>
+                    @endif
+                </dd>
+            </div>
         </dl>
-    @else
-        <p class="text-slate-500">Surat masuk tidak ditemukan.</p>
-    @endif
+    </div>
 
     <a href="{{ route('surat-masuk.index') }}"
        class="mt-6 inline-block text-sm font-medium text-indigo-600 hover:underline">
-        Kembali ke Daftar Surat Masuk
+        &larr; Kembali ke Daftar Surat Masuk
     </a>
 @endsection

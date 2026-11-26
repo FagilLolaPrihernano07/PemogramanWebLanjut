@@ -3,51 +3,85 @@
 @section('title', 'Tambah Surat Masuk')
 
 @section('content')
-    <h1 class="mb-6 text-2xl font-bold">Tambah Surat Masuk</h1>
+    <div class="mb-6">
+        <p class="text-sm text-slate-500">
+            <a href="{{ route('dashboard') }}" class="hover:text-indigo-600">Dashboard</a> /
+            <a href="{{ route('surat-masuk.index') }}" class="hover:text-indigo-600">Surat Masuk</a> / Tambah
+        </p>
+        <h1 class="mt-1 text-2xl font-bold text-slate-900">Tambah Surat Masuk</h1>
+    </div>
 
-    <form action="{{ route('surat-masuk.store') }}" method="POST"
-          class="max-w-xl space-y-4 rounded-lg bg-white p-6 shadow">
+    <form action="{{ route('surat-masuk.store') }}" method="POST" enctype="multipart/form-data"
+          class="max-w-2xl space-y-5 rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
         @csrf
 
-        <div>
-            <label class="mb-1 block text-sm font-medium">Nomor Surat</label>
-            <input name="nomor_surat" value="{{ old('nomor_surat') }}"
-                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-            @error('nomor_surat') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+        <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700">Nomor Surat</label>
+                <input name="nomor_surat" value="{{ old('nomor_surat') }}"
+                    class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">
+                @error('nomor_surat') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700">Tanggal</label>
+                <input type="date" name="tanggal" value="{{ old('tanggal') }}"
+                    class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">
+                @error('tanggal') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700">Pengirim</label>
+                <input name="pengirim" value="{{ old('pengirim') }}"
+                    class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">
+                @error('pengirim') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700">Kategori</label>
+                <select name="category_id"
+                    class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">
+                    <option value="">-- Tanpa kategori --</option>
+                    @foreach ($categories as $kategori)
+                        <option value="{{ $kategori->id }}" @selected(old('category_id') == $kategori->id)>
+                            {{ $kategori->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
         </div>
 
         <div>
-            <label class="mb-1 block text-sm font-medium">Tanggal</label>
-            <input type="date" name="tanggal" value="{{ old('tanggal') }}"
-                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-            @error('tanggal') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <label class="mb-1 block text-sm font-medium">Pengirim</label>
-            <input name="pengirim" value="{{ old('pengirim') }}"
-                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-            @error('pengirim') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <label class="mb-1 block text-sm font-medium">Perihal</label>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Perihal</label>
             <input name="perihal" value="{{ old('perihal') }}"
-                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-            @error('perihal') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">
+            @error('perihal') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
 
         <div>
-            <label class="mb-1 block text-sm font-medium">Keterangan</label>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Keterangan</label>
             <textarea name="keterangan" rows="3"
-                class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">{{ old('keterangan') }}</textarea>
-            @error('keterangan') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/15">{{ old('keterangan') }}</textarea>
+            @error('keterangan') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center gap-4">
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Lampiran</label>
+            <input type="file" name="lampiran" accept=".pdf,.jpg,.jpeg,.png"
+                class="block w-full cursor-pointer rounded-lg border border-slate-300 bg-white text-sm text-slate-600 file:mr-4 file:cursor-pointer file:border-0 file:bg-indigo-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100">
+            <p class="mt-1.5 text-xs text-slate-500">PDF, JPG, atau PNG. Maksimal 2 MB.</p>
+            @error('lampiran') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+        </div>
+
+        <div class="flex items-center gap-3 border-t border-slate-100 pt-5">
             <button type="submit"
-                class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">Simpan</button>
-            <a href="{{ route('surat-masuk.index') }}" class="text-sm text-slate-600 hover:underline">Batal</a>
+                class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">
+                Simpan
+            </button>
+            <a href="{{ route('surat-masuk.index') }}" class="text-sm font-medium text-slate-600 hover:underline">Batal</a>
         </div>
     </form>
 @endsection
